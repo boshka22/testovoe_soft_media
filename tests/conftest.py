@@ -17,15 +17,14 @@ from app.services.post import PostService
 
 async def create_test_database():
     """Создаёт тестовую базу данных, если её нет."""
-dsn = (
-    f"postgresql://{settings.postgres_user}:{settings.postgres_password}"
-    f"@{settings.postgres_host}:{settings.postgres_port}/postgres"
-)
+    dsn = (
+        f"postgresql://{settings.postgres_user}:{settings.postgres_password}"
+        f"@{settings.postgres_host}:{settings.postgres_port}/postgres"
+    )
     conn = await asyncpg.connect(dsn)
     try:
         exists = await conn.fetchval(
-            "SELECT 1 FROM pg_database WHERE datname = $1",
-            "blog_test"
+            "SELECT 1 FROM pg_database WHERE datname = $1", "blog_test"
         )
         if not exists:
             await conn.execute('CREATE DATABASE "blog_test"')
