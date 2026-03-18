@@ -1,0 +1,10 @@
+[tool.black]
+line-length = 88
+target-version = ["py310", "py311"]
+
+[tool.pytest.ini_options]
+asyncio_mode = "auto"
+python_files = ["test_*.py"]
+python_classes = ["Test*"]
+python_functions = ["test_*"]
+addopts = "-v --tb=short"
