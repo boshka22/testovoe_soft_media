@@ -53,16 +53,12 @@ class TestCacheLogic:
         post = await _create_post(client)
         post_id = post["id"]
 
-        # Первый GET — cache miss, views = 1, пост кешируется.
         await client.get(f"/posts/{post_id}")
         assert await fake_redis.get(f"post:{post_id}") is not None
 
-        # Второй GET — cache hit, views должно стать 2.
         response = await client.get(f"/posts/{post_id}")
         assert response.status_code == 200
 
-        # Проверяем счётчик напрямую через отдельный GET (cache miss после
-        # инвалидации не нужен — проверяем list, там кеша нет).
         list_response = await client.get("/posts?skip=0&limit=10")
         post_from_list = next(
             p for p in list_response.json()["items"] if p["id"] == post_id
@@ -132,7 +128,6 @@ class TestCRUD:
         assert data["title"] == "Новый пост"
         assert data["views_count"] == 0
         assert "id" in data
-        # REST: Location указывает URI созданного ресурса.
         assert response.headers.get("location") == f"/posts/{data['id']}"
 
     async def test_list_posts_returns_pagination_meta(
