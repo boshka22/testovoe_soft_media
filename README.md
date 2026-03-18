@@ -42,6 +42,8 @@
 
 ## Быстрый старт
 
+git clone https://github.com/boshka22/testovoe_soft_media
+
 ```bash
 cp .env.example .env
 docker-compose up --build
