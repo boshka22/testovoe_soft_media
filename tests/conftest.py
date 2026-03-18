@@ -17,8 +17,10 @@ from app.services.post import PostService
 
 async def create_test_database():
     """Создаёт тестовую базу данных, если её нет."""
-    dsn = f"postgresql://{settings.postgres_user}:{settings.postgres_password}@{settings.postgres_host}:{settings.postgres_port}/postgres"
-
+dsn = (
+    f"postgresql://{settings.postgres_user}:{settings.postgres_password}"
+    f"@{settings.postgres_host}:{settings.postgres_port}/postgres"
+)
     conn = await asyncpg.connect(dsn)
     try:
         exists = await conn.fetchval(
